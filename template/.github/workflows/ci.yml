@@ -1,0 +1,22 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Until the pacmak plugin API is released to npm, CI needs a jsii
+      # toolchain checkout to link against — mirror scripts/link-dev.sh here
+      # (check out the toolchain repos/branches you develop against), then:
+      #
+      # - run: ./scripts/link-dev.sh ../jsii ../jsii-rosetta
+      - run: npm run build
+      - run: npm test

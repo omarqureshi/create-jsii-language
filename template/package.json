@@ -1,0 +1,28 @@
+{
+  "name": "jsii-target-{{lang}}",
+  "version": "0.1.0",
+  "description": "{{Lang}} language target for jsii, as an external jsii-pacmak plugin",
+  "license": "Apache-2.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "tsc -p tsconfig.test.json && node --test build/test/*.test.js"
+  },
+  "peerDependencies": {
+    "jsii-pacmak": ">= 1.0.0 < 2.0.0 || >= 0.0.0-0 < 0.1.0"
+  },
+  "dependencies": {
+    "@jsii/spec": "*",
+    "codemaker": "*",
+    "fs-extra": "^10.0.0",
+    "jsii-reflect": "*",
+    "jsii-rosetta": ">= 5.9.0",
+    "semver": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "typescript": "~5.9.0"
+  },
+  "//": "Until the pacmak plugin API ships to npm, develop against a jsii monorepo checkout: scripts/link-dev.sh"
+}

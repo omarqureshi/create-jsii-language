@@ -1,0 +1,24 @@
+{
+  "name": "create-jsii-language",
+  "version": "0.1.0",
+  "description": "Scaffold a community jsii language target: pacmak plugin, runtime guide, conformance-driven roadmap",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Omar Qureshi",
+    "email": "omar@omarqureshi.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omarqureshi/create-jsii-language.git"
+  },
+  "bin": {
+    "create-jsii-language": "bin/create-jsii-language.js"
+  },
+  "files": [
+    "bin",
+    "template"
+  ],
+  "engines": {
+    "node": ">= 18"
+  }
+}
