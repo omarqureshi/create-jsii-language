@@ -10,6 +10,13 @@ following the shape of the
 npx jsii-pacmak --plugin jsii-target-{{lang}} -t {{lang}} -o dist -- <jsii-package>
 ```
 
+Generating a whole installed dependency closure (e.g. `npm install aws-cdk-lib`, then
+everything it needs) is one invocation — add `--recurse`:
+
+```sh
+npx jsii-pacmak --plugin jsii-target-{{lang}} -t {{lang}} --recurse -o dist node_modules/aws-cdk-lib
+```
+
 ## Status: freshly scaffolded
 
 The *shape* is complete and everything compiles and runs; the {{Lang}}
