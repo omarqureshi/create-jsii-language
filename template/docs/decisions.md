@@ -2,8 +2,10 @@
 
 Every jsii language target answers the same set of questions. Record your
 answers here *as you make them* — this file becomes the specification your
-generator, runtime, and documentation all agree on. Each entry links the
-worked Ruby answer, not to copy, but to see what a complete answer covers.
+generator, runtime, and documentation all agree on. Each entry quotes the
+worked Ruby answer, not to copy, but to see what a complete answer covers;
+the full completed document lives at
+https://github.com/omarqureshi/jsii-target-ruby/blob/main/docs/decisions.md.
 
 ## Type names
 
