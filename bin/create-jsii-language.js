@@ -40,10 +40,16 @@ const Lang = lang
   .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
   .join('');
 
+// SCREAMING_SNAKE form for environment variable names: my-lang -> MY_LANG
+const LANG = lang.toUpperCase().replace(/-/g, '_');
+
 const templateRoot = path.join(__dirname, '..', 'template');
 
 function render(text) {
-  return text.replace(/\{\{lang\}\}/g, lang).replace(/\{\{Lang\}\}/g, Lang);
+  return text
+    .replace(/\{\{lang\}\}/g, lang)
+    .replace(/\{\{Lang\}\}/g, Lang)
+    .replace(/\{\{LANG\}\}/g, LANG);
 }
 
 let count = 0;
@@ -72,7 +78,7 @@ console.log(`
   The shape is complete; the language semantics are yours. Suggested order:
 
     1. Read docs/decisions.md and record your language's answers.
-    2. scripts/link-dev.sh — wire up a jsii toolchain to develop against.
+    2. scripts/link-toolchain.sh — wire up a jsii toolchain to develop against.
     3. npm run build — the skeleton compiles as-is.
     4. Point stock pacmak at it:
          npx jsii-pacmak --plugin ${path.basename(outDir)} -t ${lang} -o dist -- <some-jsii-package>

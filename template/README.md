@@ -25,9 +25,18 @@ semantics are yours to fill in. What works on day one:
 - `npm run build` compiles; stock pacmak loads the plugin and walks any
   assembly through it, emitting a JSON manifest of every type and member it
   visited — pipeline proof before any real codegen exists.
-- `npm test` runs the version-mapping unit tests and jsii-rosetta's shared
-  translations corpus against the (empty) visitor: every snippet reports as
-  a visible skip. That list is the translation progress bar.
+- `npm test` runs the version-mapping and naming-overlay unit tests, plus
+  jsii-rosetta's shared translations corpus against the (empty) visitor:
+  every snippet reports as a visible skip. That list is the translation
+  progress bar.
+- The **target-config overlay** (`JSII_{{LANG}}_TARGET_CONFIG`,
+  `src/target-config.ts`) supplies naming for published assemblies that
+  carry no `targets.{{lang}}` config — fill in `config/cdk-targets.json`
+  and the `build-cdk` workflow generates the whole AWS CDK closure from
+  published npm artifacts in one `--recurse` invocation, gated by
+  `scripts/check-cdk-naming.js` so every new submodule is a deliberate
+  naming decision. (~330 decisions to record; that's the naming progress
+  bar — the Ruby reference's completed file is the worked example.)
 
 ## The roadmap is the test suites
 
@@ -46,6 +55,6 @@ Until the pacmak plugin API is released to npm, link against local toolchain
 checkouts:
 
 ```sh
-./scripts/link-dev.sh ~/src/jsii ~/src/jsii-rosetta
+./scripts/link-toolchain.sh ~/src/jsii ~/src/jsii-rosetta
 npm run build && npm test
 ```

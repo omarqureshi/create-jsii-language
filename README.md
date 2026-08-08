@@ -35,7 +35,7 @@ bar.
 Part of the [jsii language-plugin RFC](https://github.com/omarqureshi/aws-cdk-rfcs/blob/jsii-plugin-system/text/0000-jsii-language-plugins.md)
 (community deliverable — not an AWS commitment). Requires a jsii toolchain
 with the plugin API (currently: the RFC's development branches; see the
-generated `scripts/link-dev.sh`).
+generated `scripts/link-toolchain.sh`).
 
 ## Options
 

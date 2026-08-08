@@ -64,6 +64,16 @@ loudly at generation time)?
 - *Ruby's answer:* full label mapping (`alpha`/`beta`/`rc`/`dev`), rejection
   of multiple or unmappable labels, `'>= x', '< y'` range pairs.
 
+Also decide your **dependency-pinning policy**: translate the npm ranges
+faithfully, or pin inter-package dependencies to the exact versions generated
+together? A feed that publishes the whole closure atomically wants exact pins
+(consumers resolve exactly the set that was tested together); the runtime
+library's constraint should stay a range so runtime patches don't force a
+full regeneration.
+
+- *Ruby's answer:* `JSII_RUBY_PIN_DEPENDENCIES=exact` at build time; runtime
+  gem pinned `~> 0.1` in lockstep with the plugin version.
+
 ## Callback ergonomics
 
 Async overrides, property overrides, `super` calls from user subclasses —

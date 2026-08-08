@@ -1,6 +1,9 @@
 import * as spec from '@jsii/spec';
+import * as reflect from 'jsii-reflect';
 import { Generator } from 'jsii-pacmak/lib/generator';
 import { Target, TargetOptions } from 'jsii-pacmak/lib/target';
+
+import { applyTargetOverlay } from './target-config';
 
 /**
  * TODO({{lang}}): the file extension your language uses for source files.
@@ -12,6 +15,9 @@ export class {{Lang}}Target extends Target {
 
   public constructor(options: TargetOptions) {
     super(options);
+    // Out-of-band naming (JSII_{{LANG}}_TARGET_CONFIG) merges into the
+    // assembly spec before anything reads targets.{{lang}} from it.
+    applyTargetOverlay(options.assembly.spec);
     this.generator = new {{Lang}}Generator(options.rosetta, options);
   }
 
@@ -52,6 +58,13 @@ export class {{Lang}}Generator extends Generator {
     options: TargetOptions,
   ) {
     super({ runtimeTypeChecking: options.runtimeTypeChecking });
+  }
+
+  public override async load(packageRoot: string, assembly: reflect.Assembly): Promise<void> {
+    // Overlay naming also applies here, covering direct Generator use
+    // (tests, tooling); the merge is idempotent.
+    applyTargetOverlay(assembly.spec);
+    return super.load(packageRoot, assembly);
   }
 
   protected override getAssemblyOutputDir(mod: spec.Assembly): string {
