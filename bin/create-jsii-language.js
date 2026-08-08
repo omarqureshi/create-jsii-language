@@ -30,7 +30,10 @@ if (!/^[a-z][a-z0-9-]*$/.test(lang)) {
 const dirFlag = args.indexOf('--dir');
 const outDir = path.resolve(dirFlag >= 0 ? args[dirFlag + 1] : `jsii-target-${lang}`);
 
-if (fs.existsSync(outDir) && fs.readdirSync(outDir).length > 0) {
+// A lone .git directory doesn't count as non-empty: regenerating into a
+// fresh clone (to commit scaffold updates on top of existing history) is a
+// supported flow.
+if (fs.existsSync(outDir) && fs.readdirSync(outDir).some((f) => f !== '.git')) {
   fail(`output directory is not empty: ${outDir}`);
 }
 
