@@ -1,0 +1,11 @@
+{
+  "_comment": "What this library is called in {{Lang}}. Values are LOAD-BEARING: they become published package and module names, which are permanent public API. Every top-level submodule is a naming decision — test/profile.test.js fails until each is recorded, which is what makes the decision deliberate rather than silently derived.",
+  "aws-cdk-lib": {
+    "module": "TODO-root-module-name",
+    "_submodulePrefix": "aws-cdk-lib names its submodules aws_<service> while the conventional import alias leaves the prefix off (aws_iam -> iam). That is a fact about this library, so it is declared here rather than assumed by the target.",
+    "submodulePrefix": "aws_",
+    "acronyms": ["TODO", "S3", "EC2", "IAM"],
+    "submodules": {}
+  },
+  "constructs": { "module": "TODO" }
+}

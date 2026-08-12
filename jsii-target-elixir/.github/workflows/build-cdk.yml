@@ -1,0 +1,67 @@
+name: build-cdk
+
+# Builds Elixir packages for the AWS CDK from *published npm artifacts*
+# through stock jsii-pacmak with this plugin: naming arrives via the
+# target-config overlay (config/cdk-targets.json), no forks involved.
+#
+# Freshly scaffolded, the naming-sync gate fails by design: every top-level
+# aws-cdk-lib submodule is a naming decision to record in the overlay before
+# the pipeline will build. That list is your naming progress bar.
+
+on:
+  workflow_dispatch:
+    inputs:
+      aws-cdk-lib-version:
+        description: aws-cdk-lib version to build (an npm dist-tag or exact version)
+        default: latest
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # TODO(elixir): set up your language's toolchain here (the Ruby
+      # reference uses ruby/setup-ruby for its syntax check, gem builds and
+      # synth smoke test).
+
+      - name: Bootstrap toolchain
+        uses: ./.github/actions/bootstrap-toolchain
+
+      - name: Install aws-cdk-lib@${{ inputs.aws-cdk-lib-version }} (published artifacts)
+        working-directory: ${{ runner.temp }}
+        run: |
+          mkdir -p cdk-build && cd cdk-build
+          npm init -y > /dev/null
+          npm install --save "aws-cdk-lib@${{ inputs.aws-cdk-lib-version }}" @jsii/runtime
+
+      - name: Naming-sync check (new submodules need a deliberate decision)
+        run: node scripts/check-cdk-naming.js "${{ runner.temp }}/cdk-build/node_modules/aws-cdk-lib"
+
+      - name: Generate and build packages (single --recurse over the installed closure)
+        env:
+          JSII_ELIXIR_TARGET_CONFIG: ${{ github.workspace }}/config/cdk-targets.json
+        run: |
+          workdir="${{ runner.temp }}/cdk-build"
+          node --max-old-space-size=8192 toolchain/jsii/packages/jsii-pacmak/bin/jsii-pacmak \
+            --plugin "$(pwd)" \
+            -t elixir --force-target --recurse \
+            -o "${workdir}/dist" "${workdir}/node_modules/aws-cdk-lib"
+
+      # TODO(elixir): syntax-check every generated file with your language's
+      # parser (the Ruby reference: find ... | xargs ruby -c).
+
+      # TODO(elixir): smoke test — install the built packages plus your
+      # guest runtime, synthesize a small stack, and assert on the produced
+      # CloudFormation template (the Ruby reference: scripts/synth-smoke.rb).
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: cdk-elixir-packages-${{ inputs.aws-cdk-lib-version }}
+          path: ${{ runner.temp }}/cdk-build/dist
+          if-no-files-found: error

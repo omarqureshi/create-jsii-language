@@ -1,0 +1,28 @@
+{
+  "_comment": [
+    "A synthetic naming profile, standing in for a real library's.",
+    "",
+    "This target must not need a real library to test itself: what ACME is called",
+    "in {{Lang}} is ACME's question, asked in ACME's own distribution repository",
+    "(see docs/distribution-repositories.md). These tests exercise the mechanism —",
+    "alias resolution, acronym casing, ambiguity, drift — against a library that",
+    "does not exist, which is the point.",
+    "",
+    "Shapes worth covering, one per real-world case:",
+    "  acme_storage      an alias that resembles its submodule",
+    "  acme_identity     acronym casing",
+    "  acme_streamflow   an alias that resembles nothing",
+    "  pipelines         a submodule with no vendor prefix at all"
+  ],
+  "acme-lib": {
+    "module": "ACME",
+    "submodulePrefix": "acme_",
+    "acronyms": ["ID", "HTTP", "SQL"],
+    "submodules": {
+      "acme-lib.acme_storage": { "module": "ACME::Storage" },
+      "acme-lib.acme_identity": { "module": "ACME::Identity" },
+      "acme-lib.acme_streamflow": { "module": "ACME::StreamFlow" },
+      "acme-lib.pipelines": { "module": "ACME::Pipelines" }
+    }
+  }
+}

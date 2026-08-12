@@ -1,7 +1,7 @@
 {
-  "name": "jsii-target-{{lang}}",
+  "name": "jsii-target-elixir",
   "version": "0.1.0",
-  "description": "{{Lang}} language target for jsii, as an external jsii-pacmak plugin",
+  "description": "Elixir language target for jsii, as an external jsii-pacmak plugin",
   "license": "Apache-2.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

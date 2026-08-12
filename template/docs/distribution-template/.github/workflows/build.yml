@@ -2,7 +2,7 @@ name: build-cdk
 
 # Builds {{Lang}} packages for the AWS CDK from *published npm artifacts*
 # through stock jsii-pacmak with this plugin: naming arrives via the
-# target-config overlay (config/cdk-targets.json), no forks involved.
+# target-config overlay (config/profile.json), no forks involved.
 #
 # Freshly scaffolded, the naming-sync gate fails by design: every top-level
 # aws-cdk-lib submodule is a naming decision to record in the overlay before
@@ -40,11 +40,11 @@ jobs:
           npm install --save "aws-cdk-lib@${{ inputs.aws-cdk-lib-version }}" @jsii/runtime
 
       - name: Naming-sync check (new submodules need a deliberate decision)
-        run: node scripts/check-cdk-naming.js "${{ runner.temp }}/cdk-build/node_modules/aws-cdk-lib"
+        run: AWS_CDK_LIB="${{ runner.temp }}/cdk-build/node_modules/aws-cdk-lib" node --test test/*.test.js
 
       - name: Generate and build packages (single --recurse over the installed closure)
         env:
-          JSII_{{LANG}}_TARGET_CONFIG: ${{ github.workspace }}/config/cdk-targets.json
+          JSII_{{LANG}}_TARGET_CONFIG: ${{ github.workspace }}/config/profile.json
         run: |
           workdir="${{ runner.temp }}/cdk-build"
           node --max-old-space-size=8192 toolchain/jsii/packages/jsii-pacmak/bin/jsii-pacmak \
