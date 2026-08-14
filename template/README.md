@@ -43,7 +43,7 @@ semantics are yours to fill in. What works on day one:
 | --- | --- |
 | Codegen: manifest entries become {{Lang}} source | the `on*()` hooks in `src/target.ts`; syntax-check the output with your language's parser |
 | Naming & version decisions | `docs/decisions.md` + `test/version-utils.test.ts` |
-| Guest runtime | `runtime/README.md`; then drive it with the jsii conformance kit until the full suite passes |
+| Guest runtime | `runtime/README.md`; drive it with the jsii conformance kit until the full suite passes, taking the order from `npm run compliance:next` rather than the raw failure list |
 | Example translation | `src/rosetta/visitor.ts` + corpus expectations in `test/translations/` |
 | Packaging | `{{Lang}}Target.build()` — invoke your ecosystem's package build |
 | Publish | a community feed + CI (see the Ruby reference's publish pipeline) |

@@ -7,7 +7,8 @@
   },
   "include": [
     "src/**/*.ts",
-    "test/**/*.ts"
+    "test/**/*.ts",
+    "compliance/**/*.ts"
   ],
   "exclude": [
     "test/translations/**"

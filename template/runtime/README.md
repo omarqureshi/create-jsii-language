@@ -28,10 +28,41 @@ existing guest runtime (Python, Java, .NET, Go, Ruby):
 2. `create` + `invoke` a class from `jsii-calc` by hand.
 3. Then stop hand-testing and **drive the rest from the compliance suite**:
    the jsii conformance kit is the canonical definition of "a working
-   runtime". Wire it up, watch everything fail, and work the failures to
-   zero — that is empirically how the Ruby runtime was built. Every existing
-   runtime passes the same suite; the claim you earn at the end is the same
-   one they make.
+   runtime". Wire it up and work the failures to zero — that is empirically
+   how the Ruby runtime was built. Every existing runtime passes the same
+   suite; the claim you earn at the end is the same one they make.
+
+   Do not work the raw failure list in order. All 123 fail on day one, and
+   they are not 123 problems: one missing mechanism takes every test that
+   depends on it down with it, so the list overstates how much is wrong and
+   says nothing about where to start. Point the planner at the report your
+   run wrote instead:
+
+   ```console
+   $ npm run compliance:next -- compliance/compliance-report.json
+   0/123 compliance tests passing
+
+     next  kernel           0/13
+           values           0/9
+           ...
+
+   ── kernel ──
+   Start the jsii kernel process, load an assembly, and create objects, call
+   methods and read and write properties across the boundary. Nothing else
+   runs until this does.
+
+   Outstanding:
+     callMethods
+       Methods can be invoked on a kernel object and mutate its state
+     ...
+   ```
+
+   It groups the suite into eleven capabilities, orders them by what depends
+   on what, and names the one worth working on now — with a line on each
+   outstanding test saying what it proves, which the suite's own definition
+   mostly leaves blank. The catalogue is `compliance/capabilities.ts`; when a
+   test's meaning is not obvious from its description, the reference
+   implementations in the jsii repository are the source of truth.
 
 The complete, passing reference implementation lives in the Ruby plugin
 repository (`runtime/` and `compliance/`):
