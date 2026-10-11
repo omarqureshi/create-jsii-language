@@ -1,1 +1,3 @@
 node_modules/
+# Targets generated while testing the scaffold (create-jsii-language <lang>)
+jsii-target-*/
