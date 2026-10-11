@@ -84,7 +84,7 @@ export function profileHarness(options: ProfileHarnessOptions): ProfileHarness {
       // Required lazily so this harness is usable in a process that only wants
       // the naming questions.
       /* eslint-disable-next-line @typescript-eslint/no-require-imports */
-      const { translateTypeScript } = require('jsii-rosetta/lib/translate');
+      const { translateTypeScript } = require('jsii-rosetta/lib/plugin-api');
       return translateTypeScript(
         { contents: source, fileName: 'profile.ts' },
         new {{Lang}}Visitor(),

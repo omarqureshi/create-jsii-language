@@ -1,5 +1,4 @@
-import { DefaultVisitor } from 'jsii-rosetta/lib/languages/default';
-import { TargetLanguage } from 'jsii-rosetta/lib/languages/target-language';
+import { DefaultVisitor, TargetLanguage } from 'jsii-rosetta/lib/plugin-api';
 
 /**
  * Per-node rendering context threaded through the visitor. Add fields as your

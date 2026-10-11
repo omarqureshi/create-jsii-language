@@ -1,33 +1,42 @@
 import { {{Lang}}Visitor } from './visitor';
 
 /**
+ * The jsii-rosetta plugin API version this plugin is written against
+ * (`PLUGIN_API_VERSION` in jsii-rosetta/lib/plugin-api).
+ */
+export const ROSETTA_PLUGIN_API_VERSION = '0.1.0';
+
+/**
  * Registers the {{Lang}} visitor with jsii-rosetta's external-language
  * registry.
  *
- * Guarded: against a jsii-rosetta without the registry (pre-plugin-API
- * releases), registration is skipped and example translation is simply
- * unavailable — the pacmak target then emits examples as TypeScript verbatim.
+ * Guarded: against a jsii-rosetta without the plugin API, registration is
+ * skipped loudly and example translation is unavailable — the pacmak target
+ * then emits examples as TypeScript verbatim.
  */
 export function registerRosettaLanguage(): void {
-  let registry: any;
+  let rosetta: any;
   try {
     /* eslint-disable-next-line @typescript-eslint/no-require-imports */
-    registry = require('jsii-rosetta/lib/languages/index');
+    rosetta = require('jsii-rosetta/lib/plugin-api');
   } catch {
-    return; // this jsii-rosetta does not expose its internals
+    // Loud, because the failure is otherwise invisible: every example
+    // silently stays TypeScript. Usually jsii-pacmak resolved a different
+    // jsii-rosetta copy than this plugin (see scripts/link-toolchain.sh).
+    console.error(
+      '[jsii-target-{{lang}}] the resolved jsii-rosetta has no language-plugin API; ' +
+        'example translation is DISABLED (examples will stay TypeScript).',
+    );
+    return;
   }
-  if (typeof registry.registerTargetLanguage !== 'function') {
-    return; // this jsii-rosetta predates the language registry
-  }
-  try {
-    registry.registerTargetLanguage('{{lang}}', {
+  // Registering again with the same visitor version is a no-op in rosetta,
+  // so loading this module twice is harmless.
+  rosetta.registerTargetLanguage(
+    '{{lang}}',
+    {
       version: {{Lang}}Visitor.VERSION,
       createVisitor: () => new {{Lang}}Visitor(),
-    });
-  } catch (e: any) {
-    // Already registered (e.g. the module was loaded twice): fine.
-    if (!/already registered/.test(String(e?.message))) {
-      throw e;
-    }
-  }
+    },
+    { pluginApiVersion: ROSETTA_PLUGIN_API_VERSION },
+  );
 }
