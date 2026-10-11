@@ -1,7 +1,6 @@
 import * as spec from '@jsii/spec';
 import * as reflect from 'jsii-reflect';
-import { Generator } from 'jsii-pacmak/lib/generator';
-import { Target, TargetOptions } from 'jsii-pacmak/lib/target';
+import { Generator, Target, TargetOptions } from 'jsii-pacmak/lib/plugin-api';
 
 import { applyTargetOverlay } from './target-config';
 
