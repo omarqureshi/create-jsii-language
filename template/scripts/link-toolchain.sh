@@ -48,4 +48,10 @@ if [[ -n "${rosetta_repo}" ]]; then
   fi
 fi
 
+# npm scripts find tools through node_modules/.bin, which an npm install
+# would populate; link the ones the scripts call.
+mkdir -p node_modules/.bin
+ln -sfn ../typescript/bin/tsc node_modules/.bin/tsc
+echo "  .bin/tsc -> typescript/bin/tsc"
+
 echo "linked. build with: npm run build"
